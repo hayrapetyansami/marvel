@@ -4,13 +4,12 @@ import RandomChar from "../randomChar/RandomChar";
 import CharList from "../charList/CharList";
 import CharInfo from "../charInfo/CharInfo";
 
-import decoration from "../../resources/img/vision.png";
-
 // Page
 import ComicsList from "../comicsList/ComicsList";
 import AppBanner from "../appBanner/AppBanner";
 import SingleComic from "../singleComic/SingleComic";
 
+import decoration from "../../resources/img/vision.png";
 export default class App extends Component {
   render() {
     return (
