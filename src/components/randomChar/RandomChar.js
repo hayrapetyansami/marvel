@@ -8,11 +8,6 @@ import "./randomChar.scss";
 import mjolnir from "../../resources/img/mjolnir.png"
 
 export default class RandomChar extends Component {
-  constructor(props) {
-    super(props);
-    this.updateChar(); // BAD PRACTIC
-  }
-
   state = {
     char: {},
     loading: true,
@@ -20,6 +15,20 @@ export default class RandomChar extends Component {
   }
 
   marvelService = new MarvelService()
+
+  componentDidMount() {
+    this.updateChar();
+    // this.timerID = setInterval(this.updateChar, 3000);
+  }
+
+  componentDidUpdate() {
+    // pass
+  }
+
+  componentWillUnmount() {
+    // pass
+    // clearInterval(this.timerID);
+  }
 
   onError = () => {
     this.setState({
