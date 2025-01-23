@@ -9,6 +9,9 @@ import ComicsList from "../comicsList/ComicsList";
 import AppBanner from "../appBanner/AppBanner";
 import SingleComic from "../singleComic/SingleComic";
 
+// Boundary
+import ErrorBoundary from "../errorBoundary/ErrorBoundary";
+
 import decoration from "../../resources/img/vision.png";
 export default class App extends Component {
   state = {
@@ -26,10 +29,16 @@ export default class App extends Component {
       <div className="app">
         <AppHeader />
         <main>
-          <RandomChar />
+          <ErrorBoundary>
+            <RandomChar />
+          </ErrorBoundary>
           <div className="char__content">
-            <CharList onCharSelected={this.onCharSelected} />
-            <CharInfo charId={this.state.selectedChar} />
+            <ErrorBoundary>
+              <CharList onCharSelected={this.onCharSelected} />
+            </ErrorBoundary>
+            <ErrorBoundary>
+              <CharInfo charId={this.state.selectedChar} />
+            </ErrorBoundary>
           </div>
           <img src={decoration} alt="vision" className="bg-decoration" />
         </main>
