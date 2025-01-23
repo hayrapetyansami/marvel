@@ -14,19 +14,14 @@ export default class RandomChar extends Component {
     error: false
   }
 
-  marvelService = new MarvelService()
+  marvelService = new MarvelService();
 
   componentDidMount() {
     this.updateChar();
     // this.timerID = setInterval(this.updateChar, 3000);
   }
 
-  componentDidUpdate() {
-    // pass
-  }
-
   componentWillUnmount() {
-    // pass
     // clearInterval(this.timerID);
   }
 
@@ -41,9 +36,15 @@ export default class RandomChar extends Component {
     this.setState({ char, loading: false });
   }
 
+  onCharLoading = () => {
+    this.setState({
+      loading: true
+    });
+  }
+
   updateChar = () => {
     const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
-    this.setState({ loading: true })
+    this.onCharLoading();
     this.marvelService
       .getCharacter(id)
       .then(this.onCharLoaded)
@@ -86,9 +87,19 @@ export default class RandomChar extends Component {
 
 const View = ({ char }) => {
   const { name, description, thumbnail, homepage, wiki } = char;
+  let imgStyle = { "objectFit": "cover" };
+  if (thumbnail === "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg") {
+    imgStyle = { "objectFit": "contain" };
+  }
+
   return (
     <div className="randomchar__block">
-      <img src={thumbnail} alt={name} className="randomchar__img" />
+      <img
+        src={thumbnail}
+        alt={name}
+        className="randomchar__img"
+        style={imgStyle}
+      />
       <div className="randomchar__info">
         <p className="randomchar__name">{name}</p>
         <p className="randomchar__descr">{description}</p>
@@ -97,6 +108,7 @@ const View = ({ char }) => {
             href={homepage}
             className="button button__main"
             target="_blank"
+            rel="noreferrer"
           >
             <div className="inner">homepage</div>
           </a>
@@ -104,6 +116,7 @@ const View = ({ char }) => {
             href={wiki}
             className="button button__secondary"
             target="_blank"
+            rel="noreferrer"
           >
             <div className="inner">wiki</div>
           </a>

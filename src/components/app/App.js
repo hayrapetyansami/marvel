@@ -11,6 +11,16 @@ import SingleComic from "../singleComic/SingleComic";
 
 import decoration from "../../resources/img/vision.png";
 export default class App extends Component {
+  state = {
+    selectedChar: null
+  }
+
+  onCharSelected = (id) => {
+    this.setState({
+      selectedChar: id
+    });
+  }
+
   render() {
     return (
       <div className="app">
@@ -18,8 +28,8 @@ export default class App extends Component {
         <main>
           <RandomChar />
           <div className="char__content">
-            <CharList />
-            <CharInfo />
+            <CharList onCharSelected={this.onCharSelected} />
+            <CharInfo charId={this.state.selectedChar} />
           </div>
           <img src={decoration} alt="vision" className="bg-decoration" />
         </main>
