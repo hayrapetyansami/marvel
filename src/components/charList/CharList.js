@@ -8,21 +8,47 @@ export default class CharList extends Component {
   state = {
     charList: [],
     loading: true,
-    error: false
+    onRequestLoading: false,
+    error: false,
+    offset: 0, //  max limit 1560
+    charEnded: false
   }
 
   marvelService = new MarvelService();
 
   componentDidMount() {
-    this.marvelService.getAllCharacters()
+    console.log("mount");
+    this.onRequest();
+  }
+
+  onRequest = (offset) => {
+    this.onCharListLoading();
+    this.marvelService.getAllCharacters(offset)
       .then(this.onCharListLoaded)
       .catch(this.onError);
   }
 
-  onCharListLoaded = (charList) => {
+  onCharListLoading = () => {
     this.setState({
-      charList,
-      loading: false
+      onRequestLoading: true
+    });
+  }
+
+  onCharListLoaded = (newCharList) => {
+    let ended = false;
+
+    if (newCharList.length < 9) {
+      ended = true;
+    }
+
+    this.setState(({ charList, offset }) => {
+      return {
+        charList: [...charList, ...newCharList],
+        loading: false,
+        onRequestLoading: false,
+        offset: offset + 9,
+        charEnded: ended
+      };
     });
   }
 
@@ -60,7 +86,14 @@ export default class CharList extends Component {
   }
 
   render() {
-    const { charList, loading, error } = this.state;
+    const {
+      charList,
+      loading,
+      error,
+      onRequestLoading,
+      offset,
+      charEnded
+    } = this.state;
     const items = this.renderItems(charList);
 
     const isError = error ? <Error /> : null;
@@ -72,8 +105,16 @@ export default class CharList extends Component {
         {isError}
         {isLoading}
         {isContent}
-        <button className="button button__main button__long">
-          <div className="inner">load more</div>
+
+        <button
+          onClick={() => this.onRequest(offset)}
+          disabled={onRequestLoading}
+          className="button button__main button__long"
+          style={charEnded ? { "display": "none" } : null}
+        >
+          <div className="inner">
+            {onRequestLoading ? "Loading..." : "load more"}
+          </div>
         </button>
       </div>
     );

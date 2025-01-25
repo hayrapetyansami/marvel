@@ -111,32 +111,32 @@ const View = ({ char }) => {
       </div>
       {
         comics.length > 0 ?
-          <>
-            <div className="char__comics">Comics: </div>
-            <ul className="char__comics-list">
-              {
-                comics.map((comic, index) => {
-                  // eslint-disable-next-line
-                  if (index > 10) return;
-                  return (
-                    <li className="char__comics-item" key={index}>
-                      <a
-                        href={`${comic.resourceURI}?apikey=f886cb3db7c49504cc7206fb26ead8c0`}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {comic.name}
-                      </a>
-                    </li>
-                  );
-                })
-              }
-            </ul>
-          </>
-          :
-          <p>
-            There is no comics with this character
-          </p>
+        <>
+          <div className="char__comics">Comics: </div>
+          <ul className="char__comics-list">
+            {
+              comics.map((comic, index) => {
+                // eslint-disable-next-line
+                if (index > 10) return;
+                return (
+                  <li className="char__comics-item" key={index}>
+                    <a
+                      href={`${comic.resourceURI}?apikey=f886cb3db7c49504cc7206fb26ead8c0`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {comic.name}
+                    </a>
+                  </li>
+                );
+              })
+            }
+          </ul>
+        </>
+        :
+        <p style={{ marginTop: 16, fontWeight: "bold"}}>
+          There is no comics with this character
+        </p>
       }
     </>
   );
