@@ -17,7 +17,6 @@ export default class CharList extends Component {
   marvelService = new MarvelService();
 
   componentDidMount() {
-    console.log("mount");
     this.onRequest();
   }
 
@@ -59,8 +58,20 @@ export default class CharList extends Component {
     });
   }
 
+  refItems = [];
+
+  setRef = (ref) => {
+    this.refItems.push(ref);
+  }
+
+  focucOnItem = (id) => {
+    this.refItems.forEach(item => item.classList.remove("char__item_selected"));
+    this.refItems[id].classList.add("char__item_selected");
+    this.refItems[id].focus();
+  }
+
   renderItems(arr) {
-    const items = arr.map(({ id, thumbnail, name }) => {
+    const items = arr.map(({ id, thumbnail, name }, i) => {
       let imgStyle = { "objectFit": "cover" };
       if (thumbnail === "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg") {
         imgStyle = { "objectFit": "contain" };
@@ -69,8 +80,13 @@ export default class CharList extends Component {
       return (
         <li
           className="char__item"
+          tabIndex={0}
+          ref={this.setRef}
           key={id}
-          onClick={() => this.props.onCharSelected(id)}
+          onClick={() => {
+            this.props.onCharSelected(id);
+            this.focucOnItem(i);
+          }}
         >
           <img src={thumbnail} alt={name} style={imgStyle} />
           <div className="char__name">{name}</div>
